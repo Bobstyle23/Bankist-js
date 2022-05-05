@@ -17,7 +17,7 @@ const account1 = {
     "2020-05-08T14:11:59.604Z",
     "2020-05-27T17:01:17.194Z",
     "2020-07-11T23:36:17.929Z",
-    "2020-07-12T10:51:36.790Z",
+    "2022-05-03T10:51:36.790Z",
   ],
 };
 
@@ -104,16 +104,40 @@ const inputClosePin = document.querySelector(".form__input--pin");
 
 let currentAccount;
 
-const displayMovements = (movements, sort = false) => {
+const formatMovementDate = (itemsDate) => {
+  const daysPassed = (currentDate, passedDate) => {
+    Math.round(passedDate - currentDate) / (1000 * 60 * 60 * 24);
+  };
+  const passed = daysPassed(new Date(), itemsDate);
+
+  if (passed === 0) return "Today";
+  if (passed === 1) return "Yesterday";
+  if (passed <= 7) return `${passed} days ago`;
+  else {
+    const month = (itemsDate.getMonth() + 1).toString().padStart(2, 0);
+    const day = itemsDate.getDate().toString().padStart(2, 0);
+    const year = itemsDate.getFullYear();
+
+    return `${day}/${month}/${year}`;
+  }
+};
+
+const displayMovements = (account, sort = false) => {
   containerMovements.innerHTML = "";
-  const actions = sort ? movements.slice().sort((a, b) => a - b) : movements;
+  const actions = sort
+    ? account.movements.slice().sort((a, b) => a - b)
+    : account.movements;
   actions.forEach((movement, index) => {
     const type = movement > 0 ? "deposit" : "withdrawal";
+    const date = new Date(account.movementsDates[index]);
+    const displayDate = formatMovementDate(date);
+
     const html = `
          <div class="movements__row">
            <div class="movements__type movements__type--${type}">${
       index + 1
     } ${type}</div>
+           <div class="movements__date">${displayDate}</div>
            <div class="movements__value">${movement}€</div>
         </div>
         `;
@@ -122,7 +146,7 @@ const displayMovements = (movements, sort = false) => {
 
   btnSort.addEventListener("click", (event) => {
     event.preventDefault();
-    displayMovements(currentAccount.movements, !sort);
+    displayMovements(currentAccount, !sort);
   });
 };
 
@@ -178,10 +202,14 @@ createUser(accounts);
 createBalance(accounts);
 
 const updateUI = (account) => {
-  displayMovements(account.movements);
+  displayMovements(account);
   displaySummary(account);
   displayBalance(account.movements);
 };
+
+currentAccount = account1;
+updateUI(currentAccount);
+containerApp.style.opacity = 100;
 
 btnLogin.addEventListener("click", (event) => {
   event.preventDefault();
@@ -197,6 +225,14 @@ btnLogin.addEventListener("click", (event) => {
     inputLoginPin.value = "";
     inputLoginPin.blur();
     updateUI(currentAccount);
+    const date = new Date();
+    const month = (date.getMonth() + 1).toString().padStart(2, 0);
+    const day = date.getDate().toString().padStart(2, 0);
+    const year = date.getFullYear();
+    const hour = date.getHours().toString().padStart(2, 0);
+    const minutes = date.getMinutes().toString().padStart(2, 0);
+
+    labelDate.textContent = `${day}/${month}/${year}, ${hour}:${minutes}`;
   }
 });
 
@@ -208,6 +244,7 @@ btnTransfer.addEventListener("click", (event) => {
   );
   inputTransferTo.value = "";
   inputTransferAmount.value = "";
+
   if (
     amount > 0 &&
     receiver &&
@@ -216,6 +253,8 @@ btnTransfer.addEventListener("click", (event) => {
   ) {
     currentAccount.movements.push(-amount);
     receiver.movements.push(amount);
+    currentAccount.movementsDates.push(new Date().toISOString());
+    receiver.movementsDates.push(new Date().toISOString());
     updateUI(currentAccount);
   }
 });
@@ -228,6 +267,7 @@ btnLoan.addEventListener("click", (event) => {
     currentAccount.movements.some((movement) => movement >= amount * 0.1)
   ) {
     currentAccount.movements.push(amount);
+    currentAccount.movementsDates.push(new Date().toISOString());
     updateUI(currentAccount);
   }
   inputLoanAmount.value = "";
@@ -245,6 +285,7 @@ btnClose.addEventListener("click", (event) => {
     accounts.splice(index, 1);
     containerApp.style.opacity = 0;
   }
+
   inputCloseUsername.value = "";
   inputClosePin.value = "";
 });
@@ -305,6 +346,7 @@ const dogs = [
   { weight: 8, curFood: 200, owners: ["Matilda"] },
   { weight: 13, curFood: 275, owners: ["Sarah", "John"] },
   { weight: 32, curFood: 340, owners: ["Michael"] },
+  { weight: 25, curFood: 280, owners: ["Jonas"] },
 ];
 
 //eating too much = curFood > recFood
