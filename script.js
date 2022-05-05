@@ -9,6 +9,16 @@ const account1 = {
   movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
   interestRate: 1.2,
   pin: 1111,
+  movementsDates: [
+    "2019-11-18T21:31:17.178Z",
+    "2019-12-23T07:42:02.383Z",
+    "2020-01-28T09:15:04.904Z",
+    "2020-04-01T10:17:24.185Z",
+    "2020-05-08T14:11:59.604Z",
+    "2020-05-27T17:01:17.194Z",
+    "2020-07-11T23:36:17.929Z",
+    "2020-07-12T10:51:36.790Z",
+  ],
 };
 
 const account2 = {
@@ -16,6 +26,16 @@ const account2 = {
   movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
   interestRate: 1.5,
   pin: 2222,
+  movementsDates: [
+    "2019-11-18T21:31:17.178Z",
+    "2019-12-23T07:42:02.383Z",
+    "2020-01-28T09:15:04.904Z",
+    "2020-04-01T10:17:24.185Z",
+    "2020-05-08T14:11:59.604Z",
+    "2020-05-27T17:01:17.194Z",
+    "2020-07-11T23:36:17.929Z",
+    "2020-07-12T10:51:36.790Z",
+  ],
 };
 
 const account3 = {
@@ -23,6 +43,16 @@ const account3 = {
   movements: [200, -200, 340, -300, -20, 50, 400, -460],
   interestRate: 0.7,
   pin: 3333,
+  movementsDates: [
+    "2019-11-01T13:15:33.035Z",
+    "2019-11-30T09:48:16.867Z",
+    "2019-12-25T06:04:23.907Z",
+    "2020-01-25T14:18:46.235Z",
+    "2020-02-05T16:33:06.386Z",
+    "2020-04-10T14:43:26.374Z",
+    "2020-06-25T18:49:59.371Z",
+    "2020-07-26T12:01:20.894Z",
+  ],
 };
 
 const account4 = {
@@ -30,6 +60,16 @@ const account4 = {
   movements: [430, 1000, 700, 50, 90],
   interestRate: 1,
   pin: 4444,
+  movementsDates: [
+    "2019-11-01T13:15:33.035Z",
+    "2019-11-30T09:48:16.867Z",
+    "2019-12-25T06:04:23.907Z",
+    "2020-01-25T14:18:46.235Z",
+    "2020-02-05T16:33:06.386Z",
+    "2020-04-10T14:43:26.374Z",
+    "2020-06-25T18:49:59.371Z",
+    "2020-07-26T12:01:20.894Z",
+  ],
 };
 
 const accounts = [account1, account2, account3, account4];
@@ -211,125 +251,54 @@ btnClose.addEventListener("click", (event) => {
 
 //////////////////////////////////////////////////EXERCISES
 
-// function checkDogs(dogsJulia, dogsKate) {
-//   const dogsJuliaCopy = dogsJulia.slice(1, -2); //creates a shallow copy of an array and takes 1st and last 2 elements from an array
-//   const dogs = dogsJuliaCopy.concat(dogsKate);
-//   dogs.forEach((dog, index) => {
-//     console.log(
-//       dog >= 3
-//         ? `Dog number ${index + 1} is an adult, and is ${dog} years old`
-//         : `Dog number ${index + 1} is still a puppy 🐶`
-//     );
-//   });
-//   console.log(dogs);
-// }
+const checkDogs = (dogsJulia, dogsKate) => {
+  const dogsJuliaCopy = dogsJulia.slice().splice(1, 2);
+  const dogs = dogsJuliaCopy.concat(dogsKate);
+  // const dogs = [...dogsJuliaCopy, ...dogsKate];
+  const checkDogAges = dogs.filter((dog, index) => {
+    return dog >= 3
+      ? console.log(`Dog number ${index + 1} is an adult`)
+      : console.log(`Dog number ${index + 1} is still a puppy`);
+  });
+  console.log(dogs, checkDogAges);
+};
 
 // checkDogs([3, 5, 2, 12, 7], [4, 1, 15, 8, 3]);
 // checkDogs([9, 16, 6, 8, 3], [10, 5, 6, 1, 4]);
 
-// function calcHumanAge(ages) {
-//   const humanAge = ages.map((age) => {
-//     return age <= 2 ? age * 2 : 16 + age * 4;
-//   });
-//   const adult = humanAge.filter((dog) => {
-//     return dog >= 18;
-//   });
+function calcAverageHumanAge(ages) {
+  const dogAges = ages.map((age) => {
+    return age <= 2 ? age * 2 : 16 + age * 4;
+  });
+  const adultDog = dogAges.filter((age) => {
+    return age >= 18;
+  });
+  const average =
+    adultDog.reduce((acc, current) => {
+      return acc + current;
+    }, 0) / adultDog.length;
 
-//   const average =
-//     adult.reduce((accumulator, age) => {
-//       return accumulator + age;
-//     }, 0) / adult.length;
-//   return average;
-// }
+  console.log(adultDog, average);
+}
 
-// const calcAvgHumanAge = (ages) => {
-//   const humanAge = ages
-//     .map((age) => (age <= 2 ? age * 2 : 16 + age * 4))
-//     .filter((dog) => dog >= 18)
-//     .reduce((acc, item, i, arr) => acc + item / arr.length, 0);
-//   return humanAge;
-// };
-
-// console.log(calcAvgHumanAge([5, 2, 4, 1, 15, 8, 3]));
-// console.log(calcAvgHumanAge([16, 6, 10, 5, 6, 1, 4]));
-
-// console.log(calcHumanAge([5, 2, 4, 1, 15, 8, 3]));
-// console.log(calcHumanAge([16, 6, 10, 5, 6, 1, 4]));
-
-const accountMovements = accounts
-  .map((account) => account.movements)
-  .flat()
-  .reduce((acc, current) => acc + current, 0);
-console.log(accountMovements);
-
-const accountMovements2 = accounts
-  .flatMap((account) => account.movements)
-  .reduce((acc, current) => acc + current, 0);
-
-console.log(accountMovements2);
-
-// a > b return 1
-// b > a return -1
-movements.sort((a, b) => (a > b ? 1 : -1));
-console.log(movements);
-
-const totalDeposits = accounts
-  .map((account) => account.movements)
-  .flat()
-  .filter((action) => action > 0)
-  .reduce((accumulator, current) => accumulator + current, 0);
-
-console.log(totalDeposits);
-
-const depositsOverThousand = accounts
-  .flatMap((deposit) => deposit.movements)
-  .filter((deposit) => deposit >= 1000).length;
-
-console.log(depositsOverThousand);
-
-const depositsOverThousand2 = accounts
-  .flatMap((deposit) => deposit.movements)
-  //to count instances in an array which meets the condition
-  .reduce((count, current) => (current >= 1000 ? count + 1 : count), 0);
-
-console.log(depositsOverThousand2);
-
-const { deposit, withdrawal } = accounts
-  .flatMap((account) => account.movements)
-  .reduce(
-    (sum, current) => {
-      current > 0 ? (sum.deposit += current) : (sum.withdrawal += current);
-      return sum;
-    },
-    { deposit: 0, withdrawal: 0 }
-  );
-
-console.log({ deposit, withdrawal });
-
-const convertTitleCase = (title) => {
-  const exceptions = ["a", "an", "and", "the", "but", "or", "on", "in", "with"];
-  const titleCase = title
-    .toLowerCase()
-    .split(" ")
-    .map((word) =>
-      exceptions.includes(word) ? word : word[0].toUpperCase() + word.slice(1)
-    )
-    .join(" ");
-
-  return titleCase;
+const calcAverageHumanAges = (ages) => {
+  const dogAges = ages
+    .map((age) => {
+      return age <= 2 ? age * 2 : 16 + age * 4;
+    })
+    .filter((age) => {
+      return age >= 18;
+    })
+    .reduce((acc, current, index, arr) => {
+      return acc + current / arr.length;
+    }, 0);
+  console.log(dogAges);
 };
 
-console.log(convertTitleCase("this is a nice title"));
-console.log(convertTitleCase("this is a LONG title but not too long"));
-console.log(convertTitleCase("and here is another title with an EXAMPLE"));
-
-// const createBalance = (userBalance) => {
-//     userBalance.forEach((balance) => {
-//       balance.balance = balance.movements.reduce((accumulator, item) => {
-//         return accumulator + item;
-//       }, 0);
-//     });
-//   };
+calcAverageHumanAge([5, 2, 4, 1, 15, 8, 3]);
+calcAverageHumanAge([16, 6, 10, 5, 6, 1, 4]);
+calcAverageHumanAges([5, 2, 4, 1, 15, 8, 3]);
+calcAverageHumanAges([16, 6, 10, 5, 6, 1, 4]);
 
 const dogs = [
   { weight: 22, curFood: 250, owners: ["Alice", "Bob"] },
@@ -338,52 +307,70 @@ const dogs = [
   { weight: 32, curFood: 340, owners: ["Michael"] },
 ];
 
-const createFoodPortion = (dogs) => {
-  dogs.forEach((dog) => {
-    dog.portion = Math.trunc(dog.weight ** 0.75 * 28);
-  });
-};
-createFoodPortion(dogs);
-console.log(dogs);
+//eating too much = curFood > recFood
+//eating too little = curFood < recFood
+//eating ok = curFood > (recFood * 0.90) && curFood < (recFood * 1.10)
 
-const dogSarah = dogs.find((dog) => dog.owners.includes("Sarah"));
-console.log(dogSarah);
-console.log(
-  `Sarah's dog is eating too ${
-    dogSarah.curFood > dogSarah.portion ? "much" : "little"
-  }`
-);
+const portion = dogs.forEach((dog) => {
+  return (dog.portion = dog.weight ** 0.75 * 28);
+});
+
+const sarahDog = () => {
+  const dog = dogs.map((dog) => dog);
+  const findSarah = dog.find((owner) => owner.owners.includes("Sarah"));
+  const checkFood =
+    findSarah.curFood > findSarah.portion
+      ? console.log("Sarah dog eating too much")
+      : console.log("Sarah dog eating too little");
+
+  return checkFood;
+};
+
+sarahDog();
 
 const ownersEatTooMuch = dogs
   .filter((dog) => dog.curFood > dog.portion)
-  .map((owner) => owner.owners)
-  .flat();
+  .flatMap((owner) => owner.owners);
 
 const ownersEatTooLittle = dogs
-  .filter((dog) => dog.portion > dog.curFood)
-  .map((owner) => owner.owners)
-  .flat();
-console.log(ownersEatTooMuch);
-console.log(ownersEatTooLittle);
+  .filter((dog) => dog.curFood < dog.portion)
+  .flatMap((owner) => owner.owners);
 
-console.log(`${ownersEatTooMuch.join(" and ")}'s dogs eat too much`);
-console.log(`${ownersEatTooLittle.join(" and ")}'s dogs eat too little`);
-
-console.log(dogs.some((dog) => dog.curFood === dog.portion));
-console.log(
-  dogs.some(
-    (dog) => dog.curFood > dog.portion * 0.9 && dog.curFood < dog.portion * 1.1
+dogs.some((dog) => console.log(dog.curFood === dog.portion));
+dogs.some((dog) =>
+  console.log(
+    dog.curFood > dog.portion * 0.9 && dog.curFood < dog.portion * 1.1
   )
 );
 
-const dogsEatingOk = dogs.filter(
-  (dog) => dog.curFood > dog.portion * 0.9 && dog.curFood < dog.portion * 1.1
-);
+const dogsEatingOk = dogs.filter((dog) => {
+  return dog.curFood > dog.portion * 0.9 && dog.curFood < dog.portion * 1.1;
+});
 
-console.log(dogsEatingOk);
-
-const dogs2 = dogs
+const dogsCopy = dogs
   .slice()
   .map((dog) => dog.portion)
   .sort((a, b) => (a > b ? 1 : -1));
-console.log(dogs2);
+
+console.log(ownersEatTooMuch, ownersEatTooLittle);
+console.log(`${ownersEatTooMuch.join(" and ")}'s dogs eat too much`);
+console.log(`${ownersEatTooLittle.join(" and ")}'s dogs eat too little`);
+console.log(dogsEatingOk);
+console.log(dogsCopy);
+
+// const convertTitleCase = (title) => {
+//   const exceptions = ["a", "an", "and", "the", "but", "or", "on", "in", "with"];
+//   const titleCase = title
+//     .toLowerCase()
+//     .split(" ")
+//     .map((word) =>
+//       exceptions.includes(word) ? word : word[0].toUpperCase() + word.slice(1)
+//     )
+//     .join(" ");
+
+//   return titleCase;
+// };
+
+// console.log(convertTitleCase("this is a nice title"));
+// console.log(convertTitleCase("this is a LONG title but not too long"));
+// console.log(convertTitleCase("and here is another title with an EXAMPLE"));
